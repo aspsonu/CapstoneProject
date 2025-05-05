@@ -1,0 +1,117 @@
+/* You can add global styles to this file, and also import other style files */
+.full-background {
+    background-image: url('assets/background.jpg'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.full-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(9, 9, 9, 0.4); /* dark overlay */
+    z-index: 0;
+}
+  
+.reports-background {
+    background-image: url('assets/reports.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    border-radius: 10px;
+    color: #003321;
+    min-height: 80vh; /* ✅ This is key */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+  
+.reports-background::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.107);
+    z-index: -1;
+    border-radius: 10px;
+}
+  
+.reports-background {
+    position: relative;
+    z-index: 1;
+}
+
+.global-add-btn {
+    background-color: #337ab7; /* Blue-violet */
+    color: white;
+    border-color: #204d74;
+}
+
+.global-add-btn:hover {
+    background-color: #286090;
+}
+
+.global-edit-btn {
+    background-color: #00838f; /* Blue-violet */
+    color: white;
+    border: none;
+}
+
+.global-edit-btn:hover {
+    background-color: #31b0d5;
+}
+
+.table {
+    margin-top: 20px;
+    background: transparent;
+}
+  
+th {
+    background: #006A4E;
+    color: white;
+}
+  
+table.global-striped-table > tbody > tr:nth-child(even) > td {
+    background-color:#E6F4F0  !important;
+    color: black !important;
+}
+  
+table.global-striped-table > tbody > tr:nth-child(odd) > td {
+    background-color: #E6F4F0 !important;
+    color: black !important;
+}
+  
+table.global-striped-table input,
+table.global-striped-table select {
+    background-color: transparent !important;
+    color: inherit !important;
+    border: 1px solid #ccc;
+}
+
+.profile-background {
+    background-image: url('assets/ProfilePageBackground2.jpg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 95%; /* ✅ Fill whole space cleanly without stretching */
+    min-height: 84vh;
+    width: 100vw; /* ✅ Ensure full viewport width */
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+  

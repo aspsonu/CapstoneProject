@@ -1,0 +1,145 @@
+<div class="container mt-4">
+  <h2 class="text-center">Manage Users</h2>
+
+  <!-- ✅ Success/Error Messages -->
+  <div *ngIf="message" class="alert alert-success text-center animated-message">
+    {{ message }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger text-center animated-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- ✅ Add User Button 
+  <div class="text-end mb-3">
+    <button class="btn custom-add-btn btn-lg shadow-sm" (click)="openModal()">+ Add User</button>
+  </div> -->
+
+  <!-- ✅ Filter + Add Button Row -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <!-- Filter + Search (Left Side) -->
+    <div class="d-flex align-items-right gap-5">
+      <div>
+        <label for="statusFilter" class="form-label fw-bold me-2">Filter by Status:</label>
+        <select id="statusFilter" class="form-select d-inline-block w-auto" [(ngModel)]="statusFilter" (change)="applyFilter()">
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="deleted">Deleted</option>
+        </select>
+      </div>
+  
+      <!-- Search Box (beside filter) -->
+      <div>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="applyFilter()"
+          class="form-control"
+          placeholder="Search by Full Name 🔍"
+        />
+      </div>
+    </div>
+  
+    <!-- Add Button (Right Side) -->
+    <div>
+      <button class="btn custom-add-btn btn-lg shadow-sm" (click)="openModal()">+ Add User</button>
+    </div>
+  </div>
+  
+
+
+  <!-- ✅ Add User Modal -->
+<div *ngIf="showModal" class="modal-overlay">
+  <div class="modal-content">
+    <h4 class="text-center">Add New User</h4>
+
+    <!-- ✅ Separate Message for Modal -->
+    <div *ngIf="modalMessage" class="alert alert-success text-center animated-message">
+      {{ modalMessage }}
+    </div>
+    <div *ngIf="modalErrorMessage" class="alert alert-danger text-center animated-message">
+      {{ modalErrorMessage }}
+    </div>
+ 
+    <form (ngSubmit)="addUser()">
+      <div class="form-group">
+        <label>User ID</label>
+        <input type="text" [(ngModel)]="newUser.userId" name="userId" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" [(ngModel)]="newUser.fullName" name="fullName" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="newUser.email" name="email" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="newUser.password" name="password" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <select [(ngModel)]="newUser.role" name="role" class="form-control" required>
+          <option value="">Select Role</option>
+          <option value="ADMIN">Admin</option>
+          <option value="USER">User</option>
+        </select>
+      </div>
+      <div class="modal-buttons">
+        <button type="submit" class="btn btn-success">Create User</button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <!-- ✅ User Table with Inline Editing -->
+  <table class="table table-bordered custom-striped-table">
+    <thead class="bg-dark text-white">
+      <tr>
+        <th>User ID</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!--<tr *ngFor="let user of users">-->
+        <tr *ngFor="let user of filteredUsers">
+        <td>{{ user.userId }}</td>
+        
+        <td>
+          <input *ngIf="user.isEditing" type="text" [(ngModel)]="user.fullName" class="form-control"/>
+          <span *ngIf="!user.isEditing">{{ user.fullName }}</span>
+        </td>
+        
+        <td>
+          <input *ngIf="user.isEditing" type="email" [(ngModel)]="user.email" class="form-control"/>
+          <span *ngIf="!user.isEditing">{{ user.email }}</span>
+        </td>
+
+        <td>
+          <select *ngIf="user.isEditing" [(ngModel)]="user.role" class="form-control">
+            <option value="ADMIN">Admin</option>
+            <option value="USER">User</option>
+          </select>
+          <span *ngIf="!user.isEditing">{{ user.role }}</span>
+        </td>
+        
+        <td>
+          <button *ngIf="!user.isEditing" class="btn custom-edit-btn btn-sm me-1" (click)="enableEdit(user)">Edit</button>
+          <button *ngIf="user.isEditing" class="btn btn-success btn-sm me-1" (click)="saveUser(user)">Save</button>
+          <button *ngIf="user.isEditing" class="btn btn-secondary btn-sm me-1" (click)="cancelEdit(user)">Cancel</button>
+          <!--<button class="btn btn-danger btn-sm" (click)="confirmDeleteUser(user.userId)">Delete</button>-->
+          <ng-container *ngIf="!user.deleted; else reactivateBlock">
+            <button class="btn btn-danger btn-sm" (click)="confirmDeleteUser(user.userId)">Delete</button>
+          </ng-container>
+          <ng-template #reactivateBlock>
+            <button class="btn btn-success btn-sm" (click)="reactivateUser(user.userId)">Reactivate</button>
+          </ng-template>          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

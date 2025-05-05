@@ -1,0 +1,140 @@
+.container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.fade-in {
+animation: fadeIn 0.5s ease-in-out;
+}
+
+.modal {
+display: flex !important;
+align-items: center;
+justify-content: center;
+}
+.modal-content {
+padding: 20px;
+border-radius: 8px;
+}
+
+/* ✅ Table Styling */
+.table {
+margin-top: 20px;
+/* background: #fff; */
+background: transparent;
+}
+
+th {
+background: #006A4E;
+color: white;
+}
+
+button {
+transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+transform: scale(1.05);
+}
+
+/* ✅ Animation */
+@keyframes fadeIn {
+from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+to {
+  opacity: 1;
+  transform: translateY(0);
+}
+}
+
+/* ✅ Styling for Add User Modal */
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  width: 500px; /* Fixed width */
+  max-height: 80vh; /* Prevents overflow beyond screen */
+  overflow-y: auto; /* Enables scrolling if content exceeds modal height */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1051;
+
+}
+
+.modal-buttons {
+display: flex;
+justify-content: space-between;
+margin-top: 15px;
+}
+  
+  table.custom-striped-table > tbody > tr:nth-child(even) > td {
+    background-color:#E6F4F0  !important;
+    color: black !important;
+  }
+  
+  table.custom-striped-table > tbody > tr:nth-child(odd) > td {
+    background-color: #E6F4F0 !important;
+    color: black !important;
+  }
+  
+  table.custom-striped-table input,
+  table.custom-striped-table select {
+    background-color: transparent !important;
+    color: inherit !important;
+    border: 1px solid #ccc;
+  }
+
+  .table.global-striped-table th {
+    font-size: 13px;
+  }
+  
+  .table.global-striped-table td {
+    font-size: 12px;
+  }
+
+  .table.global-striped-table .btn {
+    padding: 4px 8px;
+    font-size: 12px; 
+  }  
+  
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .table td, .table th {
+    padding: 8px 10px; /* default is usually 12px+ */
+    vertical-align: middle;
+  }
+
+  .table td {
+    word-wrap: break-word;
+    white-space: normal;
+  }
+
+  .table td {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .table td[title] {
+    cursor: help;
+  }

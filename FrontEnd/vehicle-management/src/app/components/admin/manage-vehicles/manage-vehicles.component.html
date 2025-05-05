@@ -1,0 +1,240 @@
+<div class="container-fluid mt-4">
+  <h2 class="text-center">Manage Vehicles</h2>
+
+  <!-- ✅ Success/Error Messages -->
+  <div *ngIf="message" class="alert alert-success text-center animated-message">
+    {{ message }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger text-center animated-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- ✅ Add Vehicle Button 
+  <div class="text-end mb-3">
+    <button class="btn global-add-btn btn-lg shadow-sm" (click)="openModal()">+ Add Vehicle</button>
+  </div> -->
+
+  <!-- ✅ Filter + Add Button Row -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <div class="d-flex align-items-right gap-5">
+      <div>
+        <label class="form-label fw-bold me-2">Filter by Status:</label>
+        <select class="form-select d-inline-block w-auto" [(ngModel)]="statusFilter" (change)="applyFilter()">
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="deleted">Deleted</option>
+        </select>
+      </div>
+
+      <div>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="applyFilter()"
+          class="form-control"
+          placeholder="Search by Vehicle No 🔍"
+        />
+      </div>
+    </div>
+    <div>
+      <button class="btn global-add-btn btn-lg shadow-sm" (click)="openModal()">+ Add Vehicle</button>
+    </div>
+  </div>
+
+  <!-- ✅ Add Vehicle Modal -->
+  <div *ngIf="showModal" class="modal-overlay">
+    <div class="modal-content" #modalContent>
+      <h4 class="text-center">Add New Vehicle</h4>
+
+      <!-- ✅ Vehicle Modal-Specific Messages -->
+      <div *ngIf="modalMessage" class="alert alert-success text-center animated-message">
+        {{ modalMessage }}
+      </div>
+      <div *ngIf="modalErrorMessage" class="alert alert-danger text-center animated-message">
+        {{ modalErrorMessage }}
+      </div>
+
+      <form (ngSubmit)="addVehicle()">
+        <div class="form-group">
+          <label>Vehicle Number</label>
+          <input type="text" [(ngModel)]="newVehicle.vehicleNumber" name="vehicleNumber" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>VIN</label>
+          <input type="text" [(ngModel)]="newVehicle.vehicleIdentificationNumber" name="vehicleIdentificationNumber" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Model Year</label>
+          <input type="number" [(ngModel)]="newVehicle.modelYear" name="modelYear" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Make</label>
+          <input type="text" [(ngModel)]="newVehicle.make" name="make" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Model</label>
+          <input type="text" [(ngModel)]="newVehicle.model" name="model" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Purchase Date</label>
+          <input type="date" [(ngModel)]="newVehicle.purchaseDate" name="purchaseDate" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Starting Mileage</label>
+          <input type="number" [(ngModel)]="newVehicle.startingMileage" name="startingMileage" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label>Vehicle Weight</label>
+          <!-- <input type="text" [(ngModel)]="newVehicle.vehicleWeight" name="vehicleWeight" class="form-control" required /> -->
+          <select [(ngModel)]="newVehicle.vehicleWeight" name="vehicleWeight" class="form-control" required>
+            <option value="" disabled selected>-- Select Vehicle Type --</option>
+            <option value="<= 8,500 Pounds">&lt;= 8,500 Pounds</option>
+            <option value="> 8,500 Pounds">&gt; 8,500 Pounds</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Vehicle Type</label>
+          <!-- <input type="text" [(ngModel)]="newVehicle.vehicleType" name="vehicleType" class="form-control" required /> -->
+          <select [(ngModel)]="newVehicle.vehicleType" name="vehicleType" class="form-control" required>
+            <option value="" disabled selected>-- Select Vehicle Type --</option>
+            <option value="Gasoline">Gasoline</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="E85">E85*</option>
+            <option value="CNG">CNG*</option>
+            <option value="Propane">Propane*</option>
+            <option value="Electric">Electric*</option>
+          </select>
+          
+        </div>
+        <div class="form-group">
+          <label>Vehicle Description</label>
+          <!-- <textarea [(ngModel)]="newVehicle.vehicleDescription" name="vehicleDescription" class="form-control" required></textarea> -->
+          <select [(ngModel)]="newVehicle.vehicleDescription" name="vehicleDescription" class="form-control" required>
+            <option value="" disabled selected>-- Select Vehicle Description --</option>
+            <option value="Cars and Station Wagons">Cars and Station Wagons</option>
+            <option value="LDTs, Vans, SUVs">LDTs, Vans, SUVs</option>
+          </select>
+          
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" [(ngModel)]="newVehicle.lawEnforcement" name="lawEnforcement" class="form-check-input" />
+          <label class="form-check-label">Law Enforcement Vehicle</label>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="submit" class="btn btn-success">Add Vehicle</button>
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ✅ Vehicle Table -->
+  <div class="table-wrapper">
+  <table class="table table-bordered global-striped-table">
+    <thead class="bg-dark text-white">
+      <tr>
+        <th>Vehicle Number</th>
+        <th>VIN</th>
+        <th>Model Year</th>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Purchase Date</th>
+        <th>Mileage</th>
+        <th>Weight</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Exempt Type</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr *ngFor="let vehicle of vehicles"> -->
+      <tr *ngFor="let vehicle of filteredVehicles">
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.vehicleNumber }}</span>
+          <input *ngIf="vehicle.isEditing" type="text" [(ngModel)]="vehicle.vehicleNumber" class="form-control">
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.vehicleIdentificationNumber }}</span>
+          <input *ngIf="vehicle.isEditing" type="text" [(ngModel)]="vehicle.vehicleIdentificationNumber" class="form-control">
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.modelYear }}</span>
+          <input *ngIf="vehicle.isEditing" type="number" [(ngModel)]="vehicle.modelYear" class="form-control">
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.make }}</span>
+          <input *ngIf="vehicle.isEditing" type="text" [(ngModel)]="vehicle.make" class="form-control">
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.model }}</span>
+          <input *ngIf="vehicle.isEditing" type="text" [(ngModel)]="vehicle.model" class="form-control">
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.purchaseDate }}</span>
+          <input *ngIf="vehicle.isEditing" type="date" [(ngModel)]="vehicle.purchaseDate" class="form-control">
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.startingMileage }}</span>
+          <input *ngIf="vehicle.isEditing" type="number" [(ngModel)]="vehicle.startingMileage" class="form-control">
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.vehicleWeight }}</span>
+          <!-- <input *ngIf="vehicle.isEditing" type="text" [(ngModel)]="vehicle.vehicleWeight" class="form-control"> -->
+          <select *ngIf="vehicle.isEditing" [(ngModel)]="vehicle.vehicleWeight" class="form-control">
+            <option value="" disabled selected>-- Select Vehicle Type --</option>
+            <option value="<= 8,500 Pounds">&lt;= 8,500 Pounds</option>
+            <option value="> 8,500 Pounds">&gt; 8,500 Pounds</option>
+          </select>
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.vehicleType }}</span>
+          <!-- <input *ngIf="vehicle.isEditing" type="text" [(ngModel)]="vehicle.vehicleType" class="form-control"> -->
+          <select *ngIf="vehicle.isEditing" [(ngModel)]="vehicle.vehicleType" class="form-control">
+            <option value="" disabled selected>-- Select Vehicle Type --</option>
+            <option value="Gasoline">Gasoline</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="E85">E85*</option>
+            <option value="CNG">CNG*</option>
+            <option value="Propane">Propane*</option>
+            <option value="Electric">Electric*</option>
+          </select>
+          
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.vehicleDescription }}</span>
+          <select *ngIf="vehicle.isEditing" [(ngModel)]="vehicle.vehicleDescription" class="form-control">
+            <option value="">-- Select Vehicle Description --</option>
+            <option value="Cars and Station Wagons">Cars and Station Wagons</option>
+            <option value="LDTs, Vans, SUVs">LDTs, Vans, SUVs</option>
+          </select>          
+        </td>
+        <td>
+          <span *ngIf="!vehicle.isEditing">{{ vehicle.exemptType ? 'Yes' : 'No' }}</span>
+          <select *ngIf="vehicle.isEditing" [(ngModel)]="vehicle.exemptType" class="form-control">
+            <option [value]="true">Yes</option>
+            <option [value]="false">No</option>
+          </select>
+        </td>
+        <td>
+          <button *ngIf="!vehicle.isEditing" class="btn global-edit-btn btn-sm me-1" (click)="enableEdit(vehicle)">Edit</button>
+          <button *ngIf="vehicle.isEditing" class="btn btn-success btn-sm me-1" (click)="saveVehicle(vehicle)">Save</button>
+          <button *ngIf="vehicle.isEditing" class="btn btn-secondary btn-sm" (click)="cancelEdit(vehicle)">Cancel</button>
+          <!-- <button class="btn btn-danger btn-sm" (click)="confirmDeleteVehicle(vehicle.vehicleId)">Delete</button> -->
+          <ng-container *ngIf="!vehicle.deleted; else reactivateBlock">
+            <button class="btn btn-danger btn-sm" (click)="confirmDeleteVehicle(vehicle.vehicleId)">Delete</button>
+          </ng-container>
+          <ng-template #reactivateBlock>
+            <button class="btn btn-success btn-sm" (click)="reactivateVehicle(vehicle.vehicleId)">Reactivate</button>
+          </ng-template>
+          
+        </td>
+      </tr>
+    </tbody>
+    
+  </table>
+</div>
+</div>

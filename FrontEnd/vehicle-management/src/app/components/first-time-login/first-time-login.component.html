@@ -1,0 +1,58 @@
+<div class="container">
+  <h2>🚀 First-Time Login</h2>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" [style.width]="(step * 33.3) + '%'"></div>
+  </div>
+
+  <!-- Success Message (Show only after completion) -->
+  <div *ngIf="formCompleted" class="success-message">
+    🎉 {{ message }}
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    ❌ {{ errorMessage }}
+  </div>
+
+  <!-- Step 1: User Details -->
+  <form *ngIf="!formCompleted && step === 1" (ngSubmit)="nextStep()">
+    <label for="userId">👤 User ID:</label>
+    <input type="text" id="userId" [(ngModel)]="userId" name="userId" required />
+
+    <label for="currentPassword">🔒 Current Password:</label>
+    <input type="password" id="currentPassword" [(ngModel)]="currentPassword" name="currentPassword" required />
+
+    <button type="submit">Next →</button>
+  </form>
+
+  <!-- Step 2: Set New Password -->
+  <form *ngIf="!formCompleted && step === 2" (ngSubmit)="nextStep()">
+    <label for="newPassword">🔑 New Password:</label>
+    <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required />
+
+    <label for="confirmPassword">🔑 Confirm Password:</label>
+    <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+
+    <button type="submit">Next →</button>
+  </form>
+
+  <!-- Step 3: Security Questions -->
+  <form *ngIf="!formCompleted && step === 3" (ngSubmit)="nextStep()">
+    <label for="securityQuestion1">❓ Security Question 1:</label>
+    <input type="text" id="securityQuestion1" [(ngModel)]="securityQuestion1" name="securityQuestion1" required />
+
+    <label for="securityAnswer1">📝 Answer:</label>
+    <input type="text" id="securityAnswer1" [(ngModel)]="securityAnswer1" name="securityAnswer1" required />
+
+    <label for="securityQuestion2">❓ Security Question 2:</label>
+    <input type="text" id="securityQuestion2" [(ngModel)]="securityQuestion2" name="securityQuestion2" required />
+
+    <label for="securityAnswer2">📝 Answer:</label>
+    <input type="text" id="securityAnswer2" [(ngModel)]="securityAnswer2" name="securityAnswer2" required />
+
+    <button type="submit">Submit ✅</button>
+  </form>
+
+</div>

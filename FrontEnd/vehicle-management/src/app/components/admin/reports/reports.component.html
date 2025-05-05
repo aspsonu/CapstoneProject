@@ -1,0 +1,281 @@
+<div class="reports-container">
+  
+  <!-- ✅ Left Sidebar Navigation -->
+  <div class="sidebar">
+    <h4>Vehicle Logs</h4>
+
+    <!-- ✅ Reports Dropdown -->
+    <button class="btn custom-colour btn-block dropdown-toggle" (click)="toggleReportsDropdown()">Select Reports</button>
+    <div *ngIf="showReportsDropdown">
+      <button class="btn btn-light btn-block" (click)="selectReportType('graphs')">Trend Analysis</button>
+      <button class="btn btn-light btn-block" (click)="selectReportType('reports')">View Analytics</button>
+      <button class="btn btn-light btn-block" (click)="selectReportType('government')">Government Report</button>
+    </div>
+
+    <!-- ✅ Graph Filters -->
+    <div *ngIf="selectedSection === 'graphs'">
+      <br><h4>Filters</h4>
+      <label>Year:</label>
+      <select [(ngModel)]="selectedYear" (change)="fetchGraphReports()" class="form-control">
+        <option *ngFor="let year of [2022, 2023, 2024, 2025]" [value]="year">{{ year }}</option>
+      </select>
+
+      <!--<label>Month:</label>
+      <select [(ngModel)]="selectedMonth" (change)="fetchGraphReports()" class="form-control">
+        <option value="All">All</option>
+        <option *ngFor="let month of ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']"
+                [value]="month">{{ month }}</option>
+      </select>-->
+
+      <label>Select Report:</label>
+      <button class="btn btn-primary btn-block mt-2" (click)="selectGraph('fuelExpense')">Fuel Expense</button>
+      <button class="btn btn-success btn-block mt-2" (click)="selectGraph('milesDriven')">Miles Driven</button>
+      <button class="btn btn-danger btn-block mt-2" (click)="selectGraph('maintenanceExpense')">Maintenance Expense</button>
+    </div>
+
+    <!-- ✅ Report Type Selection -->
+    <div *ngIf="selectedSection === 'reports'">
+      <h4 class="mt-4">Select Analytics</h4>
+      <button class="btn btn-warning btn-block mt-2" (click)="selectReport('maintenance')">Maintenance Record</button>
+      <button class="btn btn-info btn-block mt-2" (click)="selectReport('mileage')">Vehicle Mileage</button>
+      <button class="btn btn-success btn-block mt-2" (click)="selectReport('fuel-efficiency')">Fuel Efficiency</button>
+    </div>
+  </div>
+
+  <div class="content-section">
+
+    <!-- ✅ Welcome Message Section with local animation & icon -->
+    <div *ngIf="!selectedSection" class="reports-background">
+      <div class="text-content">
+        <!-- <h2>Welcome to Vehicle Reports Generation</h2>
+        <p>
+          Here you can view various <strong>graphical analytics</strong> and 
+          <strong>download detailed reports</strong>
+          <br />Select an option from the sidebar to get started.
+        </p> -->
+      </div>
+    </div>
+
+    <!-- ✅ Graphs Section -->
+    <div *ngIf="selectedSection === 'graphs'">
+      <h2 class="text-center">Graph Report</h2>
+      <div class="chart-container mt-2">
+        <canvas baseChart [data]="graphChartData" [type]="'line'"style="height: 100% !important; width: 100% !important;"></canvas>
+      </div>
+    </div>
+
+    <div *ngIf="selectedSection === 'government'">
+      <h2 class="text-center">Government Report</h2>
+
+<!-- 🔍 Filters -->
+<div class="row mb-3">
+  <div class="col-md-3">
+    <label for="fiscalYear">Fiscal Year</label>
+    <select [(ngModel)]="govFilter.fiscalYear" class="form-control" id="fiscalYear">
+      <option *ngFor="let year of [2023, 2024, 2025]" [value]="year">{{ year }}</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label for="month">Month (Optional)</label>
+    <select [(ngModel)]="govFilter.month" class="form-control" id="month">
+      <option value="">All</option>
+      <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+    </select>
+  </div>
+  <div class="col-md-3 d-flex align-items-end">
+    <button class="btn btn-primary btn-sm me-2" (click)="fetchGovernmentReport()">Apply</button>
+    <button class="btn btn-success btn-sm" (click)="downloadGovernmentReport()">Download Excel</button>
+  </div>
+</div>
+
+<!-- 📋 Complex Table Format -->
+<div class="table-responsive mt-4">
+  <table class="table table-bordered text-center align-middle">
+    <thead>
+      <tr>
+        <th rowspan="2">Vehicle Type</th>
+        <th rowspan="2">Description</th>
+        <th colspan="2">Number of Vehicles Operated</th>
+        <th rowspan="2">Miles Travelled</th>
+        <th colspan="2">Fuel Usage (Gallons)</th>
+        <th colspan="3">Cost ($)</th>
+      </tr>
+      <tr>
+        <th>&le; 8500 lbs</th>
+        <th>&gt; 8500 lbs</th>
+        <th>Gas/Diesel</th>
+        <th>Alternative Fuel</th>
+        <th>Gas/Diesel</th>
+        <th>Alternative Fuel</th>
+        <th>Maintenance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let type of groupedGovernmentData">
+        <ng-container *ngFor="let row of type.values; let i = index">
+          <tr>
+            <td *ngIf="i === 0" [attr.rowspan]="type.values.length">{{ type.vehicleType }}</td>
+            <td>{{ row.vehicleDescription }}</td>
+            <td>{{ row.lessThan8500 !== 0 ? row.lessThan8500 : '' }}</td>
+            <td>{{ row.greaterThan8500 !== 0 ? row.greaterThan8500 : '' }}</td>
+            <td>{{ row.milesTravelled !== 0 ? row.milesTravelled : '' }}</td>
+            <td>{{ row.gasOrDieselGallons !== 0 ? row.gasOrDieselGallons : '' }}</td>
+            <td>{{ row.altFuelGallons !== 0 ? row.altFuelGallons : '' }}</td>
+            <td>{{ row.gasOrDieselCost !== 0 ? row.gasOrDieselCost : '' }}</td>
+            <td>{{ row.altFuelCost !== 0 ? row.altFuelCost : '' }}</td>
+            <td>{{ row.maintenanceCost !== 0 ? row.maintenanceCost : '' }}</td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+
+    </div>
+
+    <!-- ✅ Reports Section -->
+    <div *ngIf="selectedSection === 'reports'">
+      
+      <!-- ✅ Vehicle Mileage Report -->
+      <div *ngIf="selectedReport === 'mileage'">
+        <h2 class="text-center">Vehicle Mileage Report</h2>
+
+        <!-- Filters -->
+        <div class="row gx-1 gy-1 mb-2">
+          <div class="col-md-3">
+            <input type="text" [(ngModel)]="mileageFilter.vehicleNumber" placeholder="Vehicle Number" class="form-control" />
+          </div>
+          <div class="col-md-3">
+            <input type="number" [(ngModel)]="mileageFilter.minMileage" placeholder="Min Mileage" class="form-control" />
+          </div>
+          <div class="col-md-3">
+            <input type="number" [(ngModel)]="mileageFilter.maxMileage" placeholder="Max Mileage" class="form-control" />
+          </div>
+          <div class="col-md-3 d-flex gap-2">
+            <button class="btn btn-primary btn-sm" [disabled]="!isVehicleMileageFilterActive()" (click)="fetchVehicleMileageReport()">Apply</button>
+            <button class="btn btn-secondary btn-sm" (click)="mileageFilter = { vehicleNumber: '', minMileage: null, maxMileage: null }; fetchVehicleMileageReport();">Reset</button>
+          </div>
+        </div>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr><th>Vehicle Number</th><th>Model Year</th><th>Current Mileage</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let vehicle of vehicleMileageData">
+              <td>{{ vehicle.vehicleNumber }}</td>
+              <td>{{ vehicle.modelYear }}</td>
+              <td>{{ vehicle.currentMileage }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-success mt-2" (click)="downloadFilteredVehicleMileageReport()">Download Report</button>
+      </div>
+
+      <!-- ✅ Maintenance Events Report -->
+      <div *ngIf="selectedReport === 'maintenance'">
+        <h2 class="text-center">Maintenance Record</h2>
+        <!-- 🔍 Maintenance Filters --> 
+        <div class="row gx-6 gy-2 align-items-center mb-3">
+
+          <!-- Start Date -->
+          <div class="col-md-2 me-4 d-flex align-items-center">
+            <label for="startDate" class="form-label me-2 mb-0" style="white-space: nowrap;">Start:</label>
+            <div class="col-12">
+              <input type="date" [(ngModel)]="maintenanceFilter.startDate" class="form-control" />
+            </div>
+          </div>
+        
+          <!-- End Date -->
+          <div class="col-md-2 me-4 d-flex align-items-center">
+            <label for="endDate" class="form-label me-2 mb-0" style="white-space: nowrap;">End:</label>
+            <div class="col-12">
+              <input type="date" [(ngModel)]="maintenanceFilter.endDate" class="form-control" />
+            </div>
+          </div>
+        
+          <!-- Grouped Vehicle Number + Costs with smaller spacing -->
+          <div class="col-md-6">
+            <div class="row gx-1"> <!-- reduced space between these three inputs -->
+              <div class="col-md-4">
+                <input type="text" [(ngModel)]="maintenanceFilter.vehicleNumber" placeholder="Vehicle Number" class="form-control" />
+              </div>
+              <div class="col-md-4">
+                <input type="number" [(ngModel)]="maintenanceFilter.minCost" placeholder="Min Cost" class="form-control" />
+              </div>
+              <div class="col-md-4 d-flex align-items-center gap-1">
+                <input type="number" [(ngModel)]="maintenanceFilter.maxCost" placeholder="Max Cost" class="form-control" style="width: 120px;" />
+                <button class="btn btn-primary btn-sm" [disabled]="!isMaintenanceFilterActive()" (click)="fetchMaintenanceEventsReport()">Apply</button>
+                <button class="btn btn-secondary btn-sm" (click)="resetMaintenanceFilters()">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <table class="table table-bordered">
+          <thead>
+            <tr><th>Date</th><th>Vehicle Number</th><th>Cost</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let maintenance of maintenanceEventsData">
+              <td>{{ maintenance.date }}</td>
+              <td>{{ maintenance.vehicleNumber }}</td>
+              <td>{{ maintenance.maintenanceCost }}</td>
+              <td>{{ maintenance.maintenanceDescription }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <button class="btn btn-danger mt-2" (click)="downloadReport('maintenance')">Download Report</button> -->
+        <button class="btn btn-danger mt-2" (click)="downloadFilteredMaintenanceReport()">Download Report</button>
+      </div>
+
+      <!-- ✅ Fuel Efficiency Report -->
+      <div *ngIf="selectedReport === 'fuel-efficiency'">
+        <h2 class="text-center">Fuel Efficiency Report</h2>
+        <p></p>
+
+        <!-- 🔍 Filters -->
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <input type="text" [(ngModel)]="fuelEfficiencyFilter.vehicleNumber" placeholder="Find by Vehicle Number" class="form-control" />
+          </div>
+          <div class="col-md-3">
+            <input type="number" [(ngModel)]="fuelEfficiencyFilter.minMpg" placeholder="Min MPG" class="form-control" />
+          </div>
+          <div class="col-md-3">
+            <input type="number" [(ngModel)]="fuelEfficiencyFilter.maxMpg" placeholder="Max MPG" class="form-control" />
+          </div>
+          <div class="col-md-2">
+            <!-- <button class="btn btn-primary w-100" (click)="fetchFuelEfficiency()">Apply</button> -->
+            <button class="btn btn-primary w-100 btn-sm" [disabled]="!isFuelEfficiencyFilterActive()" (click)="fetchFuelEfficiency()">Apply</button>
+          </div>
+          <div class="col-md-1">
+            <button class="btn btn-secondary w-80 btn-sm" (click)="clearFuelEfficiencyFilters()">Clear</button>
+          </div>
+          
+        </div>
+        
+        <!-- 📋 Table -->
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Vehicle Number</th>
+              <th>Fuel Efficiency (MPG)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let entry of fuelEfficiencyData">
+              <td>{{ entry.vehicleNumber }}</td>
+              <td>{{ entry.fuelEfficiency | number: '1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="btn btn-success mt-2" (click)="downloadFuelEfficiencyReport()">Download Excel</button>
+      </div>
+
+
+    </div>
+  </div>
+</div>

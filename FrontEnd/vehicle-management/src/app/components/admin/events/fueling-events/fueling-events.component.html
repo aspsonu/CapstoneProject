@@ -1,0 +1,94 @@
+<div class="events-container">
+  
+    <div *ngIf="successMessage" class="alert alert-success text-center">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger text-center">
+      {{ errorMessage }}
+    </div>
+  <!--
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Fueling Records</h2>
+      <button class="btn global-add-btn" (click)="openModal()">+ Add Event</button>
+    </div>
+  -->
+
+  <div class="text-center mb-3">
+    <h2>Fueling Records</h2>
+  </div>
+  
+  <!-- Filters Left & Add Button Right -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+    
+    <!-- Left: Date Filter -->
+    <div class="d-flex align-items-center flex-wrap gap-2">
+      <label class="me-2 fw-bold">Filter by Date:</label>
+      <input type="date" class="form-control w-auto" [(ngModel)]="startDate" />
+      <span class="mx-1">to</span>
+      <input type="date" class="form-control w-auto" [(ngModel)]="endDate" />
+      <button class="btn global-add-btn" (click)="applyDateFilter()">Apply</button>
+      <button class="btn global-edit-btn" (click)="clearDateFilter()">Clear</button>
+    </div>
+  
+    <!-- Right: Add Button -->
+    <div>
+      <button class="btn global-add-btn" (click)="openModal()">+ Add Event</button>
+    </div>
+  </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered global-striped-table">
+        <thead class="table-dark">
+          <tr>
+            <th>Vehicle Number</th>
+            <th>Date</th>
+            <th>Cost ($)</th>
+            <th>Volume</th>
+            <th>Current Mileage</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let event of fuelingEvents"> -->
+          <tr *ngFor="let event of filteredEvents">
+            <td>{{ event.vehicleNumber }}</td>
+            <td><input type="date" [(ngModel)]="event.date" class="form-control" *ngIf="event.isEditing"><span *ngIf="!event.isEditing">{{ event.date }}</span></td>
+            <td><input type="number" [(ngModel)]="event.fuelCost" class="form-control" *ngIf="event.isEditing"><span *ngIf="!event.isEditing">{{ event.fuelCost }}</span></td>
+            <td><input type="number" [(ngModel)]="event.fuelAdded" class="form-control" *ngIf="event.isEditing"><span *ngIf="!event.isEditing">{{ event.fuelAdded }}</span></td>
+            <td><input type="number" [(ngModel)]="event.currentMileage" class="form-control" *ngIf="event.isEditing"><span *ngIf="!event.isEditing">{{ event.currentMileage }}</span></td>
+            <td>
+              <button *ngIf="!event.isEditing" class="btn global-edit-btn btn-sm me-1" (click)="toggleEdit(event)">Edit</button>
+              <button *ngIf="event.isEditing" class="btn btn-success btn-sm me-1" (click)="updateEvent(event)">Save</button>
+              <button *ngIf="event.isEditing" class="btn btn-secondary btn-sm" (click)="cancelEdit(event)">Cancel</button>
+              <button *ngIf="!event.isEditing" class="btn btn-danger btn-sm" (click)="deleteEvent(event.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div *ngIf="showModal" class="modal-overlay">
+      <div class="modal-container">
+        <h3 class="text-center">Add Fueling Event</h3>
+        <form>
+          <label>Vehicle Number:</label>
+          <input type="text" [(ngModel)]="selectedEvent!.vehicleNumber" name="vehicleNumber" class="form-control" required>
+          <label>Date:</label>
+          <input type="date" [(ngModel)]="selectedEvent!.date" name="date" class="form-control" required>
+          <label>Fueling Cost ($):</label>
+          <input type="number" [(ngModel)]="selectedEvent!.fuelCost" name="fuelCost" class="form-control" required>
+          <label>Volume (gal):</label>
+          <input type="number" [(ngModel)]="selectedEvent!.fuelAdded" name="fuelAdded" class="form-control" required>
+          <label>Current Mileage (miles):</label>
+          <input type="number" [(ngModel)]="selectedEvent!.currentMileage" name="currentMileage" class="form-control" required>
+          <div *ngIf="modalErrorMessage" class="alert alert-danger mt-2 text-center">{{ modalErrorMessage }}</div>
+          <div *ngIf="modalSuccessMessage" class="alert alert-success mt-2 text-center">{{ modalSuccessMessage }}</div>
+          <div class="text-center mt-3">
+            <button type="button" class="btn btn-success" (click)="saveEvent()">Add Event</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="closeModal()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

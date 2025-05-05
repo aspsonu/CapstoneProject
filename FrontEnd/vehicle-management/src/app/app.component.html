@@ -1,0 +1,18 @@
+<nav *ngIf="isLoggedIn()">
+    <span *ngIf="isAdmin()">
+        <a routerLink="/admin">Admin</a>
+    </span>
+    <span *ngIf="isRootAdmin()">
+        <a routerLink="/admin">Root Admin</a>
+    </span>
+    <span *ngIf="isUser()">
+        <a routerLink="/user">User</a>
+    </span>
+    <!-- <span>
+        <button (click)="logout()" class="btn btn-danger btn-sm">Logout</button>
+    </span> -->
+</nav>
+
+
+<!-- Displays Login Form & Page Content -->
+<router-outlet></router-outlet>

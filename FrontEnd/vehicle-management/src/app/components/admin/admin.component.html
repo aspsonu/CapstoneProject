@@ -1,0 +1,44 @@
+<!-- ✅ Admin Dashboard with Navigation Bar -->
+<div class="admin-container">
+  
+  <!-- ✅ Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="'nav-item">
+            <!-- <a class="nav-link" routerLink="profile" routerLinkActive="active">Profile</a> -->
+            <a class="nav-link d-flex align-items-center" routerLink="profile" routerLinkActive="active">
+              <img src="assets/NwmsuLogo.png" alt="Profile" class="rounded-circle" width="32" height="32" />
+            </a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" routerLink="manage-users" routerLinkActive="active">Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="manage-vehicles" routerLinkActive="active">Vehicles</a>
+          </li>
+          <li class="nav-item dropdown" (click)="toggleDropdown()">
+            <a class="nav-link dropdown-toggle" role="button">
+              Records
+            </a>
+            <ul class="dropdown-menu" [class.show]="isDropdownOpen" (mouseenter)="cancelAutoClose()" (mouseleave)="restartAutoClose()">
+              <li><a class="dropdown-item" routerLink="events/maintenance" routerLinkActive="active">Maintenance Record</a></li>
+              <li><a class="dropdown-item" routerLink="events/fueling" routerLinkActive="active">Fueling Record</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="reports" routerLinkActive="active">Reports</a>
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-warning logout-btn" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- ✅ Child Components Will Load Here -->
+  <!--<div class="container mt-2 fade-in">-->
+  <div class="container-fluid mt-3 p-0 m-0 fade-in">
+    <router-outlet></router-outlet>
+  </div>
+</div>

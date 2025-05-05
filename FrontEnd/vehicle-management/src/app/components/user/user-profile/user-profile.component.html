@@ -1,0 +1,36 @@
+<div class="profile-background">
+  <div class="profile-container">
+    <h2>🚘User Dashboard🚘</h2>
+    <div *ngIf="!isEditing">
+      <div class="profile-details">
+        <p><strong>User ID:</strong> {{ profile.userId }}</p>
+        <p><strong>Full Name:</strong> {{ profile.fullName }}</p>
+        <p><strong>Email:</strong> {{ profile.email }}</p>
+      </div>
+      <button class="btn global-edit-btn mt-3" (click)="enableEdit()">Edit Profile</button>
+    </div>
+    <div *ngIf="isEditing">
+      <div class="profile-details">
+        <label>User ID:</label>
+        <input type="text" [value]="profile.userId" class="form-control" disabled>
+
+        <label>Full Name:</label>
+        <input type="text" [(ngModel)]="profile.fullName" class="form-control">
+
+        <label>Email:</label>
+        <input type="email" [(ngModel)]="profile.email" class="form-control">
+      </div>
+
+      <button class="btn btn-success mt-3" (click)="updateProfile()">Save Changes</button>
+      <button class="btn btn-secondary mt-3" (click)="isEditing = false">Cancel</button>
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success mt-2">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger mt-2">{{ errorMessage }}</div>
+
+    <div class="change-password mt-4">
+      <a routerLink="/change-password">🔒Change Password</a>
+    </div>
+  </div> 
+</div>
+ 

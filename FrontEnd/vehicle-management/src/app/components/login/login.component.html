@@ -1,0 +1,68 @@
+<div *ngIf="!authService.isLoggedIn()" class="full-background">
+    <div class="container pt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card transparent-card">
+                    <div class="card-header text-center">
+                        <img src="assets/Login_NWMSU.avif" alt="Logo" style="max-height: 80px;" class="mb-2">
+                        <!-- <h3>Login</h3> -->
+                    </div>
+                    <div class="card-body">
+                        <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+                            <div class="form-group">
+                                <label for="userId">User ID</label>
+                                <input type="text" id="userId" class="form-control" [(ngModel)]="userId" name="userId" required>
+                                <div *ngIf="loginForm.submitted && !userId" class="text-danger">
+                                    User ID is required.
+                                </div>
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required>
+                                <div *ngIf="loginForm.submitted && !password" class="text-danger">
+                                    Password is required.
+                                </div>
+                            </div> -->
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <div class="position-relative">
+                                  <input
+                                    [type]="showPassword ? 'text' : 'password'"
+                                    id="password"
+                                    class="form-control"
+                                    [(ngModel)]="password"
+                                    name="password"
+                                    required
+                                  />
+                                  <i
+  [class]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+  class="toggle-password-icon"
+  (click)="togglePasswordVisibility()"
+></i>
+
+                                </div>
+                                <div *ngIf="loginForm.submitted && !password" class="text-danger">
+                                  Password is required.
+                                </div>
+                              </div>
+                              
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="rememberMe" class="form-check-input" [(ngModel)]="rememberMe" name="rememberMe">
+                                <label for="rememberMe" class="form-check-label">Remember Me</label>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn custom-login-btn btn-block">Login</button>
+                            </div>
+                            <div class="text-center mt-2">
+                                <a routerLink="/forgot-password" class="custom-forgot-password">Forgot Password?</a>
+                            </div>
+                            <div *ngIf="errorMessage" class="text-danger text-center mt-2">
+                                {{ errorMessage }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

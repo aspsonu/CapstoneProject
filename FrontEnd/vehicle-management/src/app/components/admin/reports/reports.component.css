@@ -1,0 +1,40 @@
+.reports-container {
+  display: flex;
+  height: calc(100vh - 60px); /* ✅ Full height minus navbar */
+  overflow-x: auto;
+  overflow-y:auto;
+}
+
+.sidebar {
+  width: 250px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-right: 2px solid #ddd;
+}
+
+.content-section {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.custom-colour {
+  background-color: #006A4E; /* NWMSU Green */
+  animation: fadeInDown 0.6s ease-in-out;
+  color: white;
+}
+
+.text-content {
+  margin-right: 180px; /* 👈 Move text to the right */
+}
+
+.form-control {
+  padding: 0.3rem 0.5rem;  /* Reduce internal spacing */
+  font-size: 0.9rem;       /* Optional: slightly smaller text */
+}
+
+.chart-container {
+  position: relative;
+  height: 400px;     /* ✅ Adjust this to control height */
+  max-height: 70vh;  /* ✅ Makes sure it fits half the screen height */
+  width: 100%;
+}

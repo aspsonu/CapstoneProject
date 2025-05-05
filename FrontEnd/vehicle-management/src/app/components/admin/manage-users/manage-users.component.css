@@ -1,0 +1,114 @@
+.container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+ }
+  
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+  
+.modal {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* ✅ Table Styling */
+.table {
+  margin-top: 20px;
+  /* background: #fff; */
+  background: transparent;
+}
+
+th {
+  background: #006A4E;
+  color: white;
+}
+
+button {
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* ✅ Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+ /* ✅ Styling for Add User Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+table.custom-striped-table > tbody > tr:nth-child(even) > td {
+  background-color:#E6F4F0  !important;
+  color: black !important;
+}
+
+table.custom-striped-table > tbody > tr:nth-child(odd) > td {
+  background-color: #E6F4F0 !important;
+  color: black !important;
+}
+
+table.custom-striped-table input,
+table.custom-striped-table select {
+  background-color: transparent !important;
+  color: inherit !important;
+  border: 1px solid #ccc;
+}
+
+.custom-add-btn {
+  background-color: #337ab7; /* Blue-violet */
+  color: white;
+  border-color: #204d74;
+}
+.custom-add-btn:hover {
+  background-color: #286090;
+}
+
+.custom-edit-btn {
+  background-color: #00838f; /* Blue-violet */
+  color: white;
+  border: none;
+}
+.custom-edit-btn:hover {
+  background-color: #31b0d5;
+}

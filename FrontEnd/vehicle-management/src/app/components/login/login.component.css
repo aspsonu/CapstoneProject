@@ -1,0 +1,53 @@
+.custom-login-btn {
+    background-color: #006A4E; /* Blue-violet */
+    color: white;
+    border: none;
+}
+.custom-login-btn:hover {
+    background-color: #004C36;
+}
+
+.custom-forgot-password {
+    color: #006A4E; /* Choose your desired color */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.custom-forgot-password:hover {
+    color: #004C36; /* Darker on hover */
+    text-decoration: underline;
+}
+
+
+.transparent-cards {
+    background-color: rgba(255, 255, 255, 0.85); /* white with 85% opacity */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.transparent-card {
+    background-color: rgba(243, 243, 243, 0.509); /* Lower the opacity for lighter effect */
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.transparent-cardsd {
+    background-color: rgba(255, 255, 255, 0.6); /* Lower the opacity for lighter effect */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.toggle-password-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    z-index: 2;
+  }
+  
