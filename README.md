@@ -13,22 +13,12 @@ A full-stack web application for managing vehicles, built with **Spring Boot**, 
 - **Authentication:** JWT-based auth
 - **Deployment:** EC2 (Backend), S3 (Angular frontend), RDS (MySQL)
 
----
-
-
----
-
-
----
-
 ## ⚙️ Environment Setup
 
 ### 🔐 Spring Profiles
 
 - `application-local.properties`: for local development
 - `application-aws.properties`: for AWS deployment
-
----
 
 ## 🚀 How to Run the Project
 
@@ -41,9 +31,38 @@ A full-stack web application for managing vehicles, built with **Spring Boot**, 
    ```bash
    mvn spring-boot:run -Dspring-boot.run.profiles=local
 
-#### 🔹 For **Prod Deployment (AWS)**
+#### 🔹 For **Production Deployment (AWS)**
 
-```bash
-mvn clean package -Paws -DskipTests
+1. Run via command line:
+   ```bash
+   mvn clean package -Paws -DskipTests
 
-This generates a .war file in the target/ directory and then Deploy the .war to Tomcat (e.g., on EC2)
+### 🧱 Frontend - Angular
+
+1. Run via command line:
+   ```bash
+   ng build --configuration production
+
+Upload the dist/Vehicle_Management/ output to your S3 bucket for hosting
+
+### 🔑 Initial Root Login Setup**
+
+After starting the Spring Boot backend for the first time, execute the following SQL script in your MySQL database to create the default root user:
+
+```sql
+INSERT INTO users (   is_deleted,   email,   first_time_login,   full_name,   password,   role,   user_id ) VALUES (   b'0',     'root_admin@example.com',   b'1',     'Root Administrator',   '$2a$10$TpAqWw.MzULR.YvPAgxmU.axR2wE/iJnWOjGucM2QcEMom8mIAl.e',   'ROOT_ADMIN',   'root_admin' );
+```
+🔐 User ID: root_admin
+
+🔐 Password: rootadminPassword
+
+Note: The password is bcrypt-hashed, and JWT-based login is implemented.
+
+### 🛡 Security Practices
+
+Sensitive properties (e.g., application-aws.properties) are excluded from version control using .gitignore
+
+Production secrets should be stored via environment variables or AWS Systems Manager (SSM)
+
+### 🙋‍♂️ Author
+Sai Pranith Arandkar
