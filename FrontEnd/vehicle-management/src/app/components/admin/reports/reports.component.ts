@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Chart, ChartData, registerables } from 'chart.js';
 import { AuthService } from '../../../services/auth.service';
-import * as FileSaver from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../environments/environment';
 
@@ -310,7 +310,7 @@ export class ReportsComponent implements OnInit {
       headers: this.getHeaders(),
       responseType: 'blob'
     }).subscribe(blob => {
-      FileSaver.saveAs(blob, 'NWMSU_Vehicle_Mileage_Report.xlsx');
+      saveAs(blob, 'NWMSU_Vehicle_Mileage_Report.xlsx');
     });
   }
   
@@ -393,7 +393,7 @@ export class ReportsComponent implements OnInit {
     this.http.get(apiUrl, { headers: this.getHeaders(), responseType: 'blob' }).subscribe({
       next: (response) => {
         const fileName = reportType === 'vehicles' ? 'Vehicle_Mileage_Report.xlsx' : 'Maintenance_Events_Report.pdf';
-        FileSaver.saveAs(response, fileName);
+        saveAs(response, fileName);
       },
       error: () => {
         this.errorMessage = 'Failed to download the report.';
@@ -447,7 +447,7 @@ export class ReportsComponent implements OnInit {
       responseType: 'blob'
     }).subscribe(blob => {
       const fileName = 'NWMSU_Fuel_Efficiency_Report.xlsx';
-      FileSaver.saveAs(blob, fileName);
+      saveAs(blob, fileName);
     });
   }
 
@@ -513,7 +513,7 @@ export class ReportsComponent implements OnInit {
       responseType: 'blob'
     }).subscribe(blob => {
       const fileName = 'NWMSU Vehicle Maintenance_Report.pdf';
-      FileSaver.saveAs(blob, fileName);
+      saveAs(blob, fileName);
     });
   }
   
@@ -580,7 +580,7 @@ export class ReportsComponent implements OnInit {
       headers: this.getHeaders(),
       responseType: 'blob'
     }).subscribe(blob => {
-      FileSaver.saveAs(blob, 'Government_Report.xlsx');
+      saveAs(blob, 'Government_Report.xlsx');
     });
   }
 }

@@ -3,6 +3,7 @@ package com.nwmsu.vehicle.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -68,6 +69,7 @@ public class SecurityConfig {
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+            	.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/auth/login", "/api/auth/logout", "/api/auth/first-time-login", "/api/auth/forgot-password", "/api/auth/**").permitAll()
                 .requestMatchers("/api/auth/change-password").authenticated()
                 .requestMatchers("/api/admin/create-user", "/api/admin/users", "/api/admin/update-user/**", "/api/admin/delete-user/**").hasAnyRole("ADMIN", "ROOT_ADMIN")
@@ -94,7 +96,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://nwmsu-vehicle-management-frontend.s3-website.us-east-2.amazonaws.com/"));  // ✅ Allow Angular frontend
+        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://vehicle-management-front.s3-website-us-east-1.amazonaws.com"));  // ✅ Allow Angular frontend
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
